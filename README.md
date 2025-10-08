@@ -5,10 +5,10 @@ We use the [ReChorus](https://github.com/THUwangcy/ReChorus) framework as our co
 
 ### Workflow
 The experimental workflow consists of four main stages:
-Stage 1: Pre-train the Base Recommendation Model.
-Stage 2: Pre-train the SAE Module. Train the SAE module to learn a sparse, interpretable latent space.
-Stage 3: Latent Analysis and Selection. Systematically probes each latent feature to quantify its causal effect on different recommendation attributes. For each latent, we perform independent interventions by multiplying its activation value by different scale factors (e.g., 10.0 for amplification and 0.1 for suppression). By evaluating the resulting change in the proportion of target items in the recommendation list, we calculate a contribution score for each latent, measuring its relevance and impact on the target attribute.
-Stage 4: Fine-tune for the Target Task. Load all pre-trained models, freeze the base model, and then fine-tune the SAE using the latents selected in Stage 3 to achieve the desired control objective.
+- Stage 1: Pre-train the Base Recommendation Model.
+- Stage 2: Pre-train the SAE Module. Train the SAE module to learn a sparse, interpretable latent space.
+- Stage 3: Latent Analysis and Selection. Systematically probes each latent feature to quantify its causal effect on different recommendation attributes. For each latent, we perform independent interventions by multiplying its activation value by different scale factors (e.g., 10.0 for amplification and 0.1 for suppression). By evaluating the resulting change in the proportion of target items in the recommendation list, we calculate a contribution score for each latent, measuring its relevance and impact on the target attribute.
+- Stage 4: Fine-tune for the Target Task. Load all pre-trained models, freeze the base model, and then fine-tune the SAE using the latents selected in Stage 3 to achieve the desired control objective.
 
 ### Command
 ```bash
