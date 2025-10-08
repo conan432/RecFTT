@@ -1,0 +1,20 @@
+{
+    "Drama": 1237,
+    "Comedy": 1007,
+    "Action": 454,
+    "Thriller": 438,
+    "Romance": 416,
+    "Horror": 266,
+    "Adventure": 258,
+    "Sci-Fi": 251,
+    "Children's": 234,
+    "Crime": 178,
+    "War": 135,
+    "Musical": 106,
+    "Animation": 102,
+    "Mystery": 96,
+    "Documentary": 77,
+    "Fantasy": 65,
+    "Western": 60,
+    "Film-Noir": 39
+}
