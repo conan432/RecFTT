@@ -174,7 +174,7 @@ def main():
 
 	# Define dataset
 	data_dict = dict()
-	is_tuning_task = args.sae_train and hasattr(args, 'use_mlp_controller') and args.use_mlp_controller
+	is_tuning_task = args.sae_train and hasattr(args, 'is_tuning') and args.is_tuning
 	for phase in ['train', 'dev', 'test']:
 		data_dict[phase] = model_name.Dataset(model, corpus, phase)
 		data_dict[phase].prepare()
@@ -202,7 +202,7 @@ def main():
 	# else:
 	# 	test_sae(args, model, runner, data_dict)
 	if args.sae_train:
-		if args.use_mlp_controller: # 这是我们的Tuning任务触发器
+		if args.is_tuning: # 这是我们的Tuning任务触发器
 			if os.path.exists(args.model_path):
 				logging.info(f"Loading pre-trained SASRec+SAE model from: {args.model_path}")
 				model.load_state_dict(torch.load(args.model_path, map_location=args.device), strict=False)
@@ -325,7 +325,7 @@ if __name__ == '__main__':
 	temp_parser = argparse.ArgumentParser(description='')
 	temp_parser = model_name.parse_model_args(temp_parser)
 	temp_args, _ = temp_parser.parse_known_args()
-	if init_args.model_name.endswith('_SAE') and temp_args.use_mlp_controller:
+	if init_args.model_name.endswith('_SAE') and temp_args.is_tuning:
 		runner_name = RecSAETuningRunner
 		logging.info("Task: Tuning. Using Runner: RecSAETuningRunner")
 	else:
