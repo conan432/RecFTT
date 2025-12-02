@@ -5,10 +5,11 @@ We use the [ReChorus](https://github.com/THUwangcy/ReChorus) framework as our co
 
 ### Workflow
 The experimental workflow consists of four main stages:
-- Stage 1: Pre-train the Base Recommendation Model.
-- Stage 2: Pre-train the SAE Module. Train the SAE module to learn a sparse, interpretable latent space.
-- Stage 3: Latent Analysis and Selection. Systematically probes each latent feature to quantify its causal effect on different recommendation attributes. For each latent, we perform independent interventions by multiplying its activation value by different scale factors (e.g., 10.0 for amplification and 0.1 for suppression). By evaluating the resulting change in the proportion of target items in the recommendation list, we calculate a contribution score for each latent, measuring its relevance and impact on the target attribute.
-- Stage 4: Fine-tune for the Target Task. Load all pre-trained models, freeze the base model, and then fine-tune the SAE using the latents selected in Stage 3 to achieve the desired control objective.
+Stage 1: Pre-train the Base Recommendation Model.
+Stage 2: Pre-train the SAE Module. Train the SAE module to learn a sparse, interpretable latent space.
+Stage 3: Latent Analysis and Selection. Systematically probes each latent feature to quantify its causal effect on different recommendation attributes. For each latent, we perform independent interventions by multiplying its activation value by different scale factors (e.g., 10.0 for amplification and 0.1 for suppression). By evaluating the resulting change in the proportion of target items in the recommendation list, we calculate a contribution score for each latent, measuring its relevance and impact on the target attribute.
+(Optional) Stage 3.5: Consolidate Latent Analysis Results. After generating individual JSON files for each feature's latent scores, an auxiliary script can be used to consolidate these results into a single, comprehensive CSV file for easier comparison. This script ranks latents for each feature and presents them in a wide-format table.
+Stage 4: Fine-tune for the Target Task. Load all pre-trained models, freeze the base model, and then fine-tune the SAE using the latents selected in Stage 3 to achieve the desired control objective.
 
 ### Command
 ```bash
@@ -29,6 +30,15 @@ python analyze_latent_gro.py # For Grocery dataset. You may need to manually cha
 # Or: python analyze_latent_ml.py # For MovieLens dataset
 python choose_latent.py sasrec_analyze/vegetarian_regulation_scores.json sasrec_analyze/controller_vegetarian.json -x 100 # Select top 100 positive and top 100 negative latents
 cd ..
+
+# (Optional) STAGE 3.5: Consolidate Latent Analysis Results
+# Run this script from the 'analyze' directory.
+# It reads multiple *_regulation_scores.json files and generates a single CSV file.
+# To customize the consolidation script (consolidate_analysis.py):
+# 1. Change MODEL and DATASET variables to match your experiment (e.g., "SASRec", "Grocery").
+# 2. Modify the FEATURES list to include the specific attributes you want to compare in the final table.
+cd ../analyze
+python analyze.py
 
 # STAGE 4: Fine-tune the RecSAE module
 # This is the core of our method. We load the pre-trained SASRec and the pre-trained SAE, freeze SASRec, and fine-tune the SAE module
